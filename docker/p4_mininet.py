@@ -262,7 +262,9 @@ class P4DockerSwitch(Switch):
                                  stderr=subprocess.STDOUT, close_fds=False )
         pidp.wait()
         ps_out = pidp.stdout.readlines()
-        self.pid = int(ps_out[0])
+        # Remove the non-numeric characters like(', \n) from the output to
+        # avoid the invalid literal error
+        self.pid = int(ps_out[0].strip().replace("'",'')
         self.cmd( 'export PS1=\"\\177\"; printf "\\177"' )
         self.cmd( 'stty -echo; set +m' )
 
